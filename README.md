@@ -1,9 +1,35 @@
 # Doge-Whisper
 golang implementation of  Syswhisper2/Syswhisper3
 
-采用SSN排序的方式获取sysid以绕过hook,
+按系统调用地址排序获取System Service Number(SSN)即为sysid以绕过hook,
+
+Sorting by System Call Address
+
+dogewhisper.DWhisper() will parse the EAT of NTDLL.dll, locating all function names that begin with "Zw". 
+
+dogewhisper.DWhisper() 将解析 NTDLL.dll 的 EAT，定位所有以“Zw”开头的函数名。
+
+It replaces "Zw" with "Nt" before generating a hash of the function name.
+
+它在生成函数名称的散列之前将“Zw”替换为“Nt”。
+
+It then saves the hash and address of code stub to a table of SYSCALL_ENTRY structures. 
+
+然后它将代码存根的哈希和地址保存到 SYSCALL_ENTRY 结构表中。
+
+After gathering all the names, it uses a simple bubble sort of code addresses in ascending order. 
+
+收集所有名称后，使用简单的冒泡排序代码地址按升序排列。
+
+The SSN is the index of the system call stored in the table. 
+
+System Service Number (SSN) 是存储在表中的系统调用的索引。
+
+与原版的区别之一是在于生成的索引最后是存储于map中以便更快的查找。
 
 目前采用package动态获取的方式，后续有空的话会加上和原版类似的生成用法,指定api生成一个pkg直接调用
+
+后续会集成进gabh项目
 
 使用方式可以借鉴一下example
 
@@ -78,5 +104,17 @@ func main() {
 
 }
 
-
 ```
+
+## Reference
+https://github.com/Crummie5/Freshycalls
+
+https://github.com/jthuraisamy/SysWhispers2
+
+https://github.com/klezVirus/SysWhispers3
+
+https://github.com/C-Sto/BananaPhone
+
+https://github.com/timwhitez/Doge-Gabh
+
+https://www.mdsec.co.uk/2020/12/bypassing-user-mode-hooks-and-direct-invocation-of-system-calls-for-red-teams/
