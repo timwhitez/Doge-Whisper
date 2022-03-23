@@ -5,6 +5,7 @@ golang implementation of  Syswhisper2/Syswhisper3
 
 Sorting by System Call Address
 
+```
 dogewhisper.DWhisper() will parse the EAT of NTDLL.dll, locating all function names that begin with "Zw". 
 
 dogewhisper.DWhisper() 将解析 NTDLL.dll 的 EAT，定位所有以“Zw”开头的函数名。
@@ -24,6 +25,7 @@ After gathering all the names, it uses a simple bubble sort of code addresses in
 The SSN is the index of the system call stored in the table. 
 
 System Service Number (SSN) 是存储在表中的系统调用的索引。
+```
 
 与原版的区别之一是在于生成的索引最后是存储于map中以便更快的查找。
 
